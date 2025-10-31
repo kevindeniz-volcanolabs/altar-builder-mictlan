@@ -15,7 +15,8 @@ export enum ElementType {
   BEBIDA = 'bebida',
   JUGUETE = 'juguete',
   LIBRO = 'libro',
-  CRUZ = 'cruz'
+  CRUZ = 'cruz',
+  PERSONALES = 'personales'
 }
 
 export enum ElementCategory {

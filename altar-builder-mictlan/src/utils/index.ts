@@ -1,4 +1,4 @@
-import { GridPosition, GridDimensions } from '../types'
+import type { GridPosition, GridDimensions } from '../types'
 
 /**
  * Utility functions for Altar Builder Mictlán

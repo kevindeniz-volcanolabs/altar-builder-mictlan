@@ -1,0 +1,331 @@
+/* Altar Builder Mictlán - Animation Styles */
+
+/* Respect user preferences for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Candle Flicker Animation */
+@keyframes flicker {
+  0%, 100% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+  10% {
+    opacity: 0.95;
+    filter: brightness(0.95);
+  }
+  20% {
+    opacity: 0.9;
+    filter: brightness(0.9);
+  }
+  30% {
+    opacity: 0.95;
+    filter: brightness(0.95);
+  }
+  40% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+  50% {
+    opacity: 0.92;
+    filter: brightness(0.92);
+  }
+  60% {
+    opacity: 0.88;
+    filter: brightness(0.88);
+  }
+  70% {
+    opacity: 0.95;
+    filter: brightness(0.95);
+  }
+  80% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+  90% {
+    opacity: 0.93;
+    filter: brightness(0.93);
+  }
+}
+
+.animate-flicker {
+  animation: flicker 3s ease-in-out infinite;
+}
+
+/* Flower/Papel Picado Sway Animation */
+@keyframes sway {
+  0%, 100% {
+    transform: translateX(0) rotate(0deg);
+  }
+  25% {
+    transform: translateX(-3px) rotate(-2deg);
+  }
+  50% {
+    transform: translateX(0) rotate(0deg);
+  }
+  75% {
+    transform: translateX(3px) rotate(2deg);
+  }
+}
+
+.animate-sway {
+  animation: sway 4s ease-in-out infinite;
+  transform-origin: top center;
+}
+
+/* Calavera Glow Animation */
+@keyframes glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 2px rgba(251, 146, 60, 0.3));
+  }
+  50% {
+    filter: drop-shadow(0 0 8px rgba(251, 146, 60, 0.6));
+  }
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+/* Incense Smoke Animation */
+@keyframes smoke {
+  0% {
+    opacity: 0.6;
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: translateY(-10px) scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px) scale(1.2);
+  }
+}
+
+.animate-smoke::after {
+  content: '💨';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: smoke 3s ease-out infinite;
+  font-size: 0.8em;
+  pointer-events: none;
+}
+
+/* Bounce Animation for placement */
+@keyframes bounce-in {
+  0% {
+    transform: scale(0) translateY(-50px);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1) translateY(0);
+  }
+  75% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-bounce-in {
+  animation: bounce-in 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Flutter Animation for papel picado */
+@keyframes flutter {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-5px) rotate(-3deg);
+  }
+  50% {
+    transform: translateY(-2px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-5px) rotate(3deg);
+  }
+}
+
+.animate-flutter {
+  animation: flutter 2.5s ease-in-out infinite;
+}
+
+/* Pulse Animation for important elements */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Shimmer effect for special elements */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 3s linear infinite;
+}
+
+/* Fade in animation */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-in;
+}
+
+/* Slide up animation */
+@keyframes slide-up {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.5s ease-out;
+}
+
+/* Rotate animation */
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-rotate {
+  animation: rotate 2s linear infinite;
+}
+
+/* Scale animation for interactions */
+@keyframes scale-in {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-scale-in {
+  animation: scale-in 0.3s ease-out;
+}
+
+/* Float animation for subtle movement */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Stagger delays for multiple elements */
+.animation-delay-100 {
+  animation-delay: 100ms;
+}
+
+.animation-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animation-delay-300 {
+  animation-delay: 300ms;
+}
+
+.animation-delay-400 {
+  animation-delay: 400ms;
+}
+
+.animation-delay-500 {
+  animation-delay: 500ms;
+}
+
+/* Performance optimization - will-change for animated elements */
+.animate-flicker,
+.animate-sway,
+.animate-glow,
+.animate-flutter {
+  will-change: transform, opacity, filter;
+}
+
+/* Progress fill animation for achievement toast */
+@keyframes progress-fill {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.animate-progress-fill {
+  animation: progress-fill 5s linear;
+}
+
+/* Disable animations on low-end devices */
+@media (prefers-reduced-motion: reduce) {
+  .animate-flicker,
+  .animate-sway,
+  .animate-glow,
+  .animate-smoke,
+  .animate-flutter,
+  .animate-pulse,
+  .animate-shimmer,
+  .animate-float,
+  .animate-progress-fill {
+    animation: none !important;
+  }
+}

@@ -30,8 +30,12 @@ export default defineConfig({
         ]
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,json,woff,woff2}'],
+        cleanupOutdatedCaches: true,
+        skipWaiting: true,
+        clientsClaim: true,
         runtimeCaching: [
+          // Static assets - Cache First strategy
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
             handler: 'CacheFirst',
@@ -39,20 +43,64 @@ export default defineConfig({
               cacheName: 'google-fonts-cache',
               expiration: {
                 maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
+                maxAgeSeconds: 60 * 60 * 24 * 365 // 365 days
               },
-              cacheKeyWillBeUsed: async ({ request }) => {
-                return `${request.url}?v=1`;
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
+            }
+          },
+          // Images - Cache First with fallback
+          {
+            urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp)$/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'image-cache',
+              expiration: {
+                maxEntries: 50,
+                maxAgeSeconds: 60 * 60 * 24 * 30 // 30 days
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
+            }
+          },
+          // Application shell - Network First
+          {
+            urlPattern: /\/$/,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'app-shell-cache',
+              networkTimeoutSeconds: 3,
+              expiration: {
+                maxEntries: 5,
+                maxAgeSeconds: 60 * 60 * 24 // 24 hours
+              }
+            }
+          },
+          // API/Data - Network First with fallback
+          {
+            urlPattern: /\/api\/.*/i,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'api-cache',
+              networkTimeoutSeconds: 5,
+              expiration: {
+                maxEntries: 20,
+                maxAgeSeconds: 60 * 5 // 5 minutes
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
               }
             }
           }
         ]
+      },
+      devOptions: {
+        enabled: true,
+        type: 'module',
+        navigateFallback: 'index.html'
       }
     })
-  ],
-  test: {
-    globals: true,
-    environment: 'jsdom',
-    setupFiles: './src/test/setup.ts',
-  }
+  ]
 })
