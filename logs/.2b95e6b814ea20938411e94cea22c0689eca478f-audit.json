@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/Users/kevindeniz/work/altar-builder-mictlan/logs/.2b95e6b814ea20938411e94cea22c0689eca478f-audit.json",
+    "files": [
+        {
+            "date": 1761928647563,
+            "name": "/Users/kevindeniz/work/altar-builder-mictlan/logs/mcp-puppeteer-2025-10-31.log",
+            "hash": "9ec98a18157d47668cfaeb0aa3f5aa561e00bc8a9c6ef93d5ea936b52017f568"
+        }
+    ],
+    "hashType": "sha256"
+}

@@ -1,0 +1,156 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+    
+    color-scheme: light dark;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+    color: #f9fafb;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+@layer components {
+  /* Grid Cell Styles */
+  .grid-cell {
+    @apply border border-gray-600 bg-gray-800/50 rounded-lg transition-all duration-200 hover:bg-gray-700/50;
+  }
+  
+  .grid-cell-valid {
+    @apply border-green-400 bg-green-400/20 shadow-lg shadow-green-400/25;
+  }
+  
+  .grid-cell-invalid {
+    @apply border-red-400 bg-red-400/20 shadow-lg shadow-red-400/25;
+  }
+  
+  .grid-cell-occupied {
+    @apply bg-gray-700 border-gray-500;
+  }
+
+  /* Element Styles */
+  .element-card {
+    @apply bg-gray-800 border border-gray-600 rounded-lg p-3 cursor-grab transition-all duration-200 hover:bg-gray-700 hover:border-gray-500 hover:shadow-lg;
+  }
+  
+  .element-card-dragging {
+    @apply opacity-50 cursor-grabbing;
+  }
+  
+  .element-card-used {
+    @apply opacity-50 cursor-not-allowed bg-gray-900 border-gray-700;
+  }
+
+  /* Drag Preview */
+  .drag-preview {
+    @apply fixed pointer-events-none z-50 opacity-75 transform -translate-x-1/2 -translate-y-1/2;
+  }
+
+  /* Button Styles */
+  .btn-primary {
+    @apply bg-altar-purple hover:bg-purple-600 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-900;
+  }
+  
+  .btn-secondary {
+    @apply bg-gray-700 hover:bg-gray-600 text-gray-200 font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-900;
+  }
+
+  /* Category Tabs */
+  .category-tab {
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 cursor-pointer;
+  }
+  
+  .category-tab-active {
+    @apply bg-altar-orange text-white shadow-lg;
+  }
+  
+  .category-tab-inactive {
+    @apply bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white;
+  }
+
+  /* Achievement Toast */
+  .achievement-toast {
+    @apply fixed top-4 right-4 bg-gradient-to-r from-altar-gold to-altar-orange text-white p-4 rounded-lg shadow-xl z-50 animate-slide-up;
+  }
+
+  /* Loading Spinner */
+  .spinner {
+    @apply animate-spin rounded-full border-4 border-gray-600 border-t-altar-purple;
+  }
+}
+
+@layer utilities {
+  /* Custom animations for elements */
+  .animate-element-flicker {
+    animation: flicker 2s ease-in-out infinite alternate;
+  }
+  
+  .animate-element-sway {
+    animation: sway 3s ease-in-out infinite;
+  }
+  
+  .animate-element-flutter {
+    animation: flutter 1.5s ease-in-out infinite;
+  }
+  
+  .animate-element-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  /* Accessibility utilities */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* Focus styles for accessibility */
+  .focus-visible {
+    @apply outline-none ring-2 ring-altar-purple ring-offset-2 ring-offset-gray-900;
+  }
+
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .grid-cell {
+      @apply border-2 border-white;
+    }
+    
+    .element-card {
+      @apply border-2 border-white;
+    }
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-element-flicker,
+    .animate-element-sway,
+    .animate-element-flutter,
+    .animate-element-glow {
+      animation: none;
+    }
+  }
+}
