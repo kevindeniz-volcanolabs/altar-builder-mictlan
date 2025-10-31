@@ -90,14 +90,14 @@ export function ElementPanel() {
       </div>
 
       {/* Elements Grid */}
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="flex-1 overflow-y-auto p-6">
         {displayElements.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-gray-500">
             <span className="text-4xl mb-2">🪔</span>
             <p>No hay elementos disponibles</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 gap-8">
             {displayElements.map((element) => {
               const usageCount = getElementUsageCount(element.type);
               const isAvailable = availableElements.some((el) => el.id === element.id);

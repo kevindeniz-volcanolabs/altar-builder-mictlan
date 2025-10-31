@@ -46,33 +46,33 @@ export const ElementCard = memo(function ElementCard({
     >
       <div
         className={`
-          relative rounded-lg p-4 transition-all duration-200
+          relative rounded-xl p-5 transition-all duration-200
           ${isAvailable
-            ? 'bg-gray-800/50 hover:bg-gray-700/50 hover:shadow-lg hover:scale-105 border-2 border-gray-700 hover:border-orange-500/50'
+            ? 'bg-gray-800/50 hover:bg-gray-700/50 hover:shadow-xl hover:scale-[1.02] border-2 border-gray-700 hover:border-orange-500/50'
             : 'bg-gray-900/50 border-2 border-gray-800'
           }
         `}
       >
         {/* Element Icon */}
-        <div className="flex flex-col items-center gap-2">
-          <span className="text-4xl" role="img" aria-label={element.name}>
+        <div className="flex flex-col items-center gap-3">
+          <span className="text-5xl" role="img" aria-label={element.name}>
             {element.icon}
           </span>
 
           {/* Element Name */}
-          <h3 className="text-sm font-medium text-center text-gray-200">
+          <h3 className="text-base font-semibold text-center text-gray-100 leading-tight min-h-[2.5rem] flex items-center">
             {element.name}
           </h3>
 
           {/* Usage Counter */}
-          <div className="w-full">
-            <div className="flex justify-between text-xs text-gray-400 mb-1">
+          <div className="w-full mt-1">
+            <div className="flex justify-between text-xs text-gray-400 mb-2">
               <span>{usageCount}</span>
               <span>{element.maxQuantity}</span>
             </div>
 
             {/* Progress Bar */}
-            <div className="w-full h-1.5 bg-gray-700 rounded-full overflow-hidden">
+            <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
               <div
                 className={`h-full transition-all duration-300 ${
                   progressPercentage >= 100
