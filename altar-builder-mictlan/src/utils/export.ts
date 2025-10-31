@@ -1,4 +1,4 @@
-import html2canvas from 'html2canvas';
+import * as html2canvas from 'html2canvas';
 
 /**
  * Export options for altar image generation

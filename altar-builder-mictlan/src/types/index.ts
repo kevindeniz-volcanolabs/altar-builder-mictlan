@@ -252,3 +252,55 @@ export interface ErrorHandler {
   retry: (maxAttempts: number) => Promise<void>;
   fallback: (alternativeAction: () => void) => void;
 }
+
+// Collaboration Types (Level 3)
+export interface CollaborationPeer {
+  id: string;
+  name: string;
+  color: string;
+  cursor?: CursorPosition;
+  isConnected: boolean;
+  lastSeen: Date;
+}
+
+export interface CursorPosition {
+  x: number;
+  y: number;
+  gridPosition?: GridPosition;
+  elementId?: string;
+}
+
+export interface CollaborationState {
+  roomId?: string;
+  isHost: boolean;
+  peers: Map<string, CollaborationPeer>;
+  cursors: Map<string, CursorPosition>;
+  isConnected: boolean;
+  connectionType: 'webrtc' | 'websocket' | 'offline';
+}
+
+export interface CollaborationAction {
+  type: 'element_place' | 'element_remove' | 'cursor_move' | 'peer_join' | 'peer_leave';
+  peerId: string;
+  timestamp: number;
+  data: any;
+}
+
+export interface WebRTCConfig {
+  iceServers: RTCIceServer[];
+  maxRetries: number;
+  connectionTimeout: number;
+}
+
+export interface CollaborationEngine {
+  createRoom(): Promise<string>;
+  joinRoom(roomId: string): Promise<void>;
+  leaveRoom(): void;
+  sendAction(action: CollaborationAction): void;
+  onAction(callback: (action: CollaborationAction) => void): void;
+  onPeerConnect(callback: (peer: CollaborationPeer) => void): void;
+  onPeerDisconnect(callback: (peerId: string) => void): void;
+}
+
+// Re-export MCP types
+export * from './mcp';

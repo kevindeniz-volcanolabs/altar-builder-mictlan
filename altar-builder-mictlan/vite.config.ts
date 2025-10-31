@@ -5,7 +5,12 @@ import { VitePWA } from 'vite-plugin-pwa'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    react(),
+    react({
+      // Enable React Fast Refresh optimizations
+      fastRefresh: true,
+      // Optimize JSX runtime
+      jsxRuntime: 'automatic'
+    }),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
@@ -102,5 +107,180 @@ export default defineConfig({
         navigateFallback: 'index.html'
       }
     })
-  ]
+  ],
+  
+  // Build optimizations
+  build: {
+    // Enable code splitting
+    rollupOptions: {
+      output: {
+        // Manual chunk splitting for better caching
+        manualChunks: {
+          // Core React libraries
+          'react-vendor': ['react', 'react-dom'],
+          
+          // State management
+          'state-vendor': ['zustand'],
+          
+          // Level 2 features (Catrina)
+          'level2-achievements': [
+            './src/components/achievements/AchievementsModal.tsx',
+            './src/components/achievements/AchievementToast.tsx',
+            './src/data/achievements.ts'
+          ],
+          'level2-export': [
+            './src/components/export/ExportModal.tsx',
+            './src/utils/export.ts',
+            'html2canvas'
+          ],
+          'level2-gallery': [
+            './src/components/gallery/GalleryModal.tsx',
+            './src/components/gallery/SaveAltarDialog.tsx',
+            './src/components/gallery/StorageManager.tsx',
+            './src/utils/indexeddb.ts'
+          ],
+          'level2-audio': [
+            './src/utils/audio-engine.ts',
+            './src/data/audio.ts'
+          ],
+          'level2-animations': [
+            './src/utils/animation-engine.ts',
+            './src/styles/animations.css'
+          ],
+          
+          // Level 3 features (Mictlán)
+          'level3-collaboration': [
+            './src/components/collaboration/CollaborationModal.tsx',
+            './src/components/collaboration/CollaborationStatus.tsx',
+            './src/components/collaboration/CollaborativeCursor.tsx',
+            './src/engines/collaboration/collaboration-engine.ts',
+            './src/engines/collaboration/webrtc-engine.ts',
+            './src/engines/collaboration/operational-transform.ts'
+          ],
+          'level3-mcp': [
+            './src/engines/mcp-engine.ts',
+            './src/engines/mcp-config.ts',
+            './src/engines/mcp-zustand-bridge.ts',
+            './src/engines/mcp-modules/altar-module.ts',
+            './src/engines/mcp-modules/collaboration-module.ts',
+            './src/engines/mcp-modules/steering-module.ts',
+            './src/engines/mcp-modules/user-module.ts'
+          ],
+          'level3-mariposas': [
+            './src/components/mariposas/MariposasCanvas.tsx',
+            './src/utils/steering-behaviors.ts'
+          ]
+        },
+        
+        // Optimize chunk file names for better caching
+        chunkFileNames: (chunkInfo) => {
+          const facadeModuleId = chunkInfo.facadeModuleId
+          
+          if (facadeModuleId) {
+            // Level-based naming for better cache management
+            if (facadeModuleId.includes('level2')) {
+              return 'assets/level2-[name]-[hash].js'
+            }
+            if (facadeModuleId.includes('level3')) {
+              return 'assets/level3-[name]-[hash].js'
+            }
+          }
+          
+          return 'assets/[name]-[hash].js'
+        },
+        
+        // Optimize asset file names
+        assetFileNames: (assetInfo) => {
+          const info = assetInfo.name?.split('.') || []
+          const ext = info[info.length - 1]
+          
+          if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(ext)) {
+            return 'assets/images/[name]-[hash][extname]'
+          }
+          if (/woff2?|eot|ttf|otf/i.test(ext)) {
+            return 'assets/fonts/[name]-[hash][extname]'
+          }
+          
+          return 'assets/[name]-[hash][extname]'
+        }
+      },
+      
+      // External dependencies that should not be bundled
+      external: (id) => {
+        // Keep large libraries external in development
+        if (process.env.NODE_ENV === 'development') {
+          return ['html2canvas'].includes(id)
+        }
+        return false
+      }
+    },
+    
+    // Optimize bundle size
+    target: 'esnext',
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        // Remove console logs in production
+        drop_console: true,
+        drop_debugger: true,
+        // Remove unused code
+        dead_code: true,
+        // Optimize conditionals
+        conditionals: true,
+        // Optimize loops
+        loops: true,
+        // Remove unused variables
+        unused: true
+      },
+      mangle: {
+        // Mangle property names for better compression
+        properties: {
+          regex: /^_/
+        }
+      },
+      format: {
+        // Remove comments
+        comments: false
+      }
+    },
+    
+    // Source map configuration
+    sourcemap: process.env.NODE_ENV === 'development',
+    
+    // Chunk size warnings
+    chunkSizeWarningLimit: 500, // 500KB
+    
+    // Asset inlining threshold
+    assetsInlineLimit: 4096 // 4KB
+  },
+  
+  // Development optimizations
+  server: {
+    // Enable HTTP/2 for better performance
+    https: false,
+    // Optimize HMR
+    hmr: {
+      overlay: true
+    }
+  },
+  
+  // Dependency optimization
+  optimizeDeps: {
+    // Pre-bundle these dependencies
+    include: [
+      'react',
+      'react-dom',
+      'zustand'
+    ],
+    // Exclude these from pre-bundling
+    exclude: [
+      // Level 2 and 3 features should be lazy loaded
+      'html2canvas'
+    ]
+  },
+  
+  // Performance monitoring in development
+  define: {
+    __PERFORMANCE_MONITORING__: JSON.stringify(process.env.NODE_ENV === 'development')
+  }
 })
